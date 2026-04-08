@@ -1,0 +1,24 @@
+{
+  "name": "Yong Mei Pricing",
+  "short_name": "YM Pricing",
+  "description": "App tính giá tem nhãn Yong Mei dùng trên điện thoại",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff7ef",
+  "theme_color": "#F47A20",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "logo_yong_mei.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
