@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F47A20">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="YM Pricing">
+  <title>Yong Mei Pricing</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root{
+      --orange:#F47A20;
+      --orange-soft:#fff2e8;
+      --blue:#0E4A86;
+      --blue-soft:#eef5fb;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --bg:#fff7ef;
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --shadow:0 12px 30px rgba(14,74,134,.12);
+      --radius:22px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(244,122,32,.10), transparent 30%),
+        radial-gradient(circle at top left, rgba(14,74,134,.08), transparent 28%),
+        var(--bg);
+    }
+    .app{
+      max-width:680px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:12px 14px 28px;
+    }
+    .hero{
+      background:linear-gradient(135deg, rgba(244,122,32,1), rgba(244,122,32,.92) 45%, rgba(14,74,134,.98));
+      color:#fff;
+      border-radius:28px;
+      padding:18px 16px 18px;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:8px;
+      z-index:5;
+      margin-bottom:14px;
+    }
+    .brand{display:flex; gap:12px; align-items:center}
+    .brand img,.brand .fallback{
+      width:56px;height:56px;border-radius:16px;background:#fff;object-fit:contain;padding:6px;flex:0 0 auto;
+    }
+    .fallback{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--orange)}
+    .brand h1{margin:0;font-size:1.2rem;line-height:1.2}
+    .brand p{margin:4px 0 0;font-size:.9rem;opacity:.92}
+    .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);padding:8px 10px;border-radius:999px;font-size:.82rem}
+    .card{
+      background:var(--card);
+      border:1px solid rgba(14,74,134,.08);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:0 8px 24px rgba(0,0,0,.05);
+      margin-bottom:14px;
+    }
+    .section-title{
+      margin:0 0 12px;
+      color:var(--blue);
+      font-size:1.02rem;
+      font-weight:800;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+    }
+    .grid{display:grid;gap:12px}
+    .grid.two{grid-template-columns:1fr 1fr}
+    @media (max-width:520px){.grid.two{grid-template-columns:1fr}}
+    .field label{
+      display:block;
+      margin:0 0 6px;
+      font-weight:700;
+      font-size:.93rem;
+      color:#243447;
+    }
+    .hint{font-size:.8rem;color:var(--muted);margin-top:5px}
+    input,select,textarea,button{
+      font:inherit;
+    }
+    input,select,textarea{
+      width:100%;
+      padding:13px 14px;
+      border-radius:16px;
+      border:1px solid #d8dee9;
+      background:#fff;
+      outline:none;
+      transition:.18s ease;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 4px rgba(244,122,32,.12);
+    }
+    .btn{
+      appearance:none;border:none;cursor:pointer;
+      border-radius:16px;padding:13px 15px;font-weight:800;
+      transition:transform .05s ease, opacity .2s ease, box-shadow .2s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:var(--orange);color:#fff;box-shadow:0 10px 24px rgba(244,122,32,.22)}
+    .btn.secondary{background:var(--blue);color:#fff;box-shadow:0 10px 24px rgba(14,74,134,.18)}
+    .btn.ghost{background:#fff;color:var(--blue);border:1px solid #d8e3f0}
+    .btn.soft{background:var(--orange-soft);color:var(--orange);border:1px solid rgba(244,122,32,.16)}
+    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:520px){.result-grid{grid-template-columns:1fr}}
+    .metric{
+      border-radius:20px;padding:14px;
+      background:linear-gradient(180deg,#fff,#fff7f1);
+      border:1px solid rgba(244,122,32,.12);
+    }
+    .metric.blue{
+      background:linear-gradient(180deg,#fff,#f5faff);
+      border-color:rgba(14,74,134,.12)
+    }
+    .metric .k{font-size:.84rem;color:var(--muted);font-weight:700}
+    .metric .v{font-size:1.45rem;font-weight:900;margin-top:4px}
+    .metric .s{font-size:.82rem;color:var(--muted);margin-top:5px}
+    .smart{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px
+    }
+    .smart .box{
+      border-radius:18px;padding:12px;background:#fff;border:1px solid #e5edf6;text-align:center
+    }
+    .smart .name{font-size:.8rem;color:var(--muted);font-weight:800}
+    .smart .price{font-size:1.2rem;font-weight:900;margin-top:5px}
+    details{
+      border:1px dashed #d9e3ef;border-radius:18px;padding:10px 12px;background:#fafcff
+    }
+    summary{cursor:pointer;font-weight:800;color:var(--blue)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th,td{padding:10px 9px;border-bottom:1px solid #edf1f5;text-align:left;font-size:.92rem}
+    th{background:#f7fafc;color:#334155;position:sticky;top:0}
+    tr.selected{background:#fff7ef}
+    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .full{grid-column:1/-1}
+    .footer-note{font-size:.78rem;color:var(--muted);text-align:center;padding:6px}
+    .success{color:#116329;font-weight:700}
+    .error{color:#b42318;font-weight:700}
+    .subtle{font-size:.86rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="brand">
+      <img src="logo_yong_mei.png" alt="Yong Mei logo" onerror="this.style.display='none';document.getElementById('fallbackLogo').style.display='flex'">
+      <div id="fallbackLogo" class="fallback" style="display:none">YM</div>
+      <div>
+        <h1>Yong Mei Pricing</h1>
+        <p>App tính giá tem nhãn dùng tốt trên điện thoại</p>
+      </div>
+    </div>
+    <div class="pill-row">
+      <div class="pill">Mở phát chạy luôn</div>
+      <div class="pill">Có thể thêm ra màn hình chính</div>
+      <div class="pill">Quản lý vật liệu riêng</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Tính giá nhanh <span class="subtle" id="installHint">Mở bằng Safari/Chrome để dùng tốt nhất</span></h2>
+    <div class="grid two">
+      <div class="field">
+        <label>Rộng (mm)</label>
+        <input id="w" type="number" inputmode="decimal" placeholder="Ví dụ: 55">
+      </div>
+      <div class="field">
+        <label>Cao (mm)</label>
+        <input id="h" type="number" inputmode="decimal" placeholder="Ví dụ: 190">
+      </div>
+      <div class="field">
+        <label>Số lượng</label>
+        <input id="qty" type="number" inputmode="numeric" placeholder="Ví dụ: 5000" value="5000">
+      </div>
+      <div class="field">
+        <label>Vật liệu nền</label>
+        <select id="baseMaterial"></select>
+      </div>
+      <div class="field full">
+        <label>Cán màng / UV</label>
+        <select id="finishMaterial"></select>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:12px">
+      <button class="btn primary" id="calcBtn">Tính giá</button>
+      <button class="btn ghost" id="resetBtn">Làm mới</button>
+    </div>
+    <div class="hint">App lưu danh mục vật liệu trên điện thoại này. Khi đổi máy, dùng Xuất JSON để sao lưu.</div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Kết quả</h2>
+    <div class="result-grid">
+      <div class="metric">
+        <div class="k">Giá vốn / tem</div>
+        <div class="v" id="costPer">0 đ</div>
+        <div class="s">Bao gồm vật liệu, in, bế, hao hụt, đóng gói</div>
+      </div>
+      <div class="metric blue">
+        <div class="k">Giá bán đề xuất / tem</div>
+        <div class="v" id="sellPer">0 đ</div>
+        <div class="s">Mức chuẩn để báo giá nhanh</div>
+      </div>
+      <div class="metric">
+        <div class="k">Tổng giá vốn</div>
+        <div class="v" id="costTotal">0 đ</div>
+        <div class="s">Theo số lượng đang nhập</div>
+      </div>
+      <div class="metric blue">
+        <div class="k">Tổng doanh thu đề xuất</div>
+        <div class="v" id="sellTotal">0 đ</div>
+        <div class="s">Theo số lượng đang nhập</div>
+      </div>
+    </div>
+    <div class="smart">
+      <div class="box"><div class="name">Cạnh tranh</div><div class="price" id="smartLow">0 đ</div></div>
+      <div class="box"><div class="name">Chuẩn</div><div class="price" id="smartMid">0 đ</div></div>
+      <div class="box"><div class="name">Premium</div><div class="price" id="smartHigh">0 đ</div></div>
+    </div>
+    <details style="margin-top:12px">
+      <summary>Xem chi tiết tính toán</summary>
+      <div id="detailBox" class="subtle" style="margin-top:10px;line-height:1.65"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Quản lý vật liệu</h2>
+    <div class="grid two">
+      <div class="field">
+        <label>Loại danh mục</label>
+        <select id="catalogType">
+          <option value="base">Vật liệu nền</option>
+          <option value="finish">Cán màng / UV</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Mã vật liệu</label>
+        <input id="matCode" placeholder="Ví dụ: DG01">
+      </div>
+      <div class="field">
+        <label>Tên vật liệu</label>
+        <input id="matName" placeholder="Ví dụ: Decal giấy">
+      </div>
+      <div class="field">
+        <label>Đơn giá (đ/m²)</label>
+        <input id="matPrice" type="number" inputmode="decimal" placeholder="Ví dụ: 10000">
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:12px">
+      <button class="btn primary" id="saveMatBtn">Thêm / cập nhật</button>
+      <button class="btn ghost" id="deleteMatBtn">Xóa dòng chọn</button>
+      <button class="btn soft" id="exportJsonBtn">Xuất JSON</button>
+      <button class="btn secondary" id="importJsonBtn">Nhập JSON</button>
+    </div>
+    <textarea id="jsonArea" rows="4" placeholder="Dữ liệu JSON sẽ hiện ở đây khi bấm Xuất JSON, hoặc dán vào đây rồi bấm Nhập JSON" style="margin-top:10px"></textarea>
+    <div id="msg" class="hint"></div>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead>
+          <tr><th style="width:28%">Mã</th><th>Tên vật liệu</th><th style="width:26%">Đơn giá</th></tr>
+        </thead>
+        <tbody id="materialsTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    © Yong Mei Printing Solutions — Bản mobile web app. Có thể thêm ra màn hình chính để dùng như app.
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'yong_mei_pricing_mobile_v2';
+
+const defaultData = {
+  base: [
+    {code:'DG01', name:'Decal giấy', price:10000},
+    {code:'DN01', name:'Decal nhựa', price:15000},
+    {code:'PP01', name:'PP trắng', price:12500},
+    {code:'PV01', name:'PVC', price:18000}
+  ],
+  finish: [
+    {code:'K0', name:'Không cán / không UV', price:0},
+    {code:'CB01', name:'Cán màng bóng', price:3000},
+    {code:'CM01', name:'Cán màng mờ', price:3500},
+    {code:'UVB1', name:'UV bóng', price:4000},
+    {code:'UVM1', name:'UV mờ', price:4500}
+  ]
+};
+
+let data = loadData();
+let selectedIndex = -1;
+
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return structuredClone(defaultData);
+    const parsed = JSON.parse(raw);
+    return {
+      base: Array.isArray(parsed.base) ? parsed.base : structuredClone(defaultData.base),
+      finish: Array.isArray(parsed.finish) ? parsed.finish : structuredClone(defaultData.finish)
+    };
+  }catch(e){
+    return structuredClone(defaultData);
+  }
+}
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function fmt(n){
+  return (Math.round(Number(n)||0)).toLocaleString('vi-VN') + ' đ';
+}
+function ceil50(n){
+  n = Number(n)||0;
+  return Math.ceil(n/50)*50;
+}
+function currentList(){
+  return document.getElementById('catalogType').value === 'base' ? data.base : data.finish;
+}
+function refreshSelects(){
+  const baseSel = document.getElementById('baseMaterial');
+  const finSel = document.getElementById('finishMaterial');
+  const oldBase = baseSel.value;
+  const oldFin = finSel.value;
+  baseSel.innerHTML = data.base.map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join('');
+  finSel.innerHTML = data.finish.map((x,i)=>`<option value="${i}">${x.code} - ${x.name}</option>`).join('');
+  if(oldBase && data.base[oldBase]) baseSel.value = oldBase;
+  if(oldFin && data.finish[oldFin]) finSel.value = oldFin;
+}
+function refreshTable(){
+  const tbody = document.getElementById('materialsTable');
+  const list = currentList();
+  tbody.innerHTML = list.map((m,i)=>`
+    <tr data-index="${i}" class="${i===selectedIndex?'selected':''}">
+      <td>${escapeHtml(m.code||'')}</td>
+      <td>${escapeHtml(m.name||'')}</td>
+      <td>${Number(m.price||0).toLocaleString('vi-VN')}</td>
+    </tr>
+  `).join('');
+  [...tbody.querySelectorAll('tr')].forEach(tr=>{
+    tr.addEventListener('click', ()=>{
+      selectedIndex = Number(tr.dataset.index);
+      const item = list[selectedIndex];
+      document.getElementById('matCode').value = item.code || '';
+      document.getElementById('matName').value = item.name || '';
+      document.getElementById('matPrice').value = item.price || 0;
+      refreshTable();
+    });
+  });
+}
+function escapeHtml(text){
+  return String(text).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function setMsg(text, type=''){
+  const el = document.getElementById('msg');
+  el.className = 'hint ' + (type || '');
+  el.textContent = text;
+}
+function saveMaterial(){
+  const list = currentList();
+  const code = document.getElementById('matCode').value.trim();
+  const name = document.getElementById('matName').value.trim();
+  const price = Number(document.getElementById('matPrice').value);
+  if(!code || !name || !(price >= 0)){
+    setMsg('Cần nhập đủ mã, tên và đơn giá hợp lệ.', 'error'); return;
+  }
+  const sameCodeIndex = list.findIndex((x, idx) => x.code.toLowerCase() === code.toLowerCase() && idx !== selectedIndex);
+  if(sameCodeIndex >= 0){
+    setMsg('Mã vật liệu đã tồn tại trong danh mục này.', 'error'); return;
+  }
+  const item = {code, name, price};
+  if(selectedIndex >= 0 && list[selectedIndex]){
+    list[selectedIndex] = item;
+    setMsg('Đã cập nhật vật liệu.', 'success');
+  }else{
+    list.push(item);
+    selectedIndex = list.length - 1;
+    setMsg('Đã thêm vật liệu mới.', 'success');
+  }
+  saveData(); refreshSelects(); refreshTable(); calculate();
+}
+function deleteMaterial(){
+  const list = currentList();
+  if(selectedIndex < 0 || !list[selectedIndex]){
+    setMsg('Hãy chọn một dòng để xóa.', 'error'); return;
+  }
+  const removed = list.splice(selectedIndex,1);
+  selectedIndex = -1;
+  document.getElementById('matCode').value='';
+  document.getElementById('matName').value='';
+  document.getElementById('matPrice').value='';
+  saveData(); refreshSelects(); refreshTable(); calculate();
+  setMsg('Đã xóa: ' + removed[0].name, 'success');
+}
+function exportJSON(){
+  const text = JSON.stringify(data, null, 2);
+  document.getElementById('jsonArea').value = text;
+  try{
+    navigator.clipboard.writeText(text);
+    setMsg('Đã xuất JSON và copy vào clipboard.', 'success');
+  }catch(e){
+    setMsg('Đã xuất JSON. Bạn có thể copy thủ công.', 'success');
+  }
+}
+function importJSON(){
+  try{
+    const text = document.getElementById('jsonArea').value.trim();
+    if(!text){ setMsg('Hãy dán dữ liệu JSON vào ô trước.', 'error'); return; }
+    const parsed = JSON.parse(text);
+    if(!Array.isArray(parsed.base) || !Array.isArray(parsed.finish)){
+      setMsg('JSON không đúng cấu trúc.', 'error'); return;
+    }
+    data = {
+      base: parsed.base.map(x=>({code:String(x.code||''), name:String(x.name||''), price:Number(x.price||0)})).filter(x=>x.code && x.name),
+      finish: parsed.finish.map(x=>({code:String(x.code||''), name:String(x.name||''), price:Number(x.price||0)})).filter(x=>x.code && x.name),
+    };
+    saveData(); selectedIndex=-1; refreshSelects(); refreshTable(); calculate();
+    setMsg('Đã nhập JSON thành công.', 'success');
+  }catch(e){
+    setMsg('Không đọc được JSON. Hãy kiểm tra lại dữ liệu.', 'error');
+  }
+}
+function calculate(){
+  const w = Number(document.getElementById('w').value || 0);
+  const h = Number(document.getElementById('h').value || 0);
+  const qty = Number(document.getElementById('qty').value || 0);
+  const b = data.base[Number(document.getElementById('baseMaterial').value || 0)] || data.base[0];
+  const f = data.finish[Number(document.getElementById('finishMaterial').value || 0)] || data.finish[0];
+
+  if(!(w>0) || !(h>0) || !(qty>0)){
+    document.getElementById('costPer').textContent = '0 đ';
+    document.getElementById('sellPer').textContent = '0 đ';
+    document.getElementById('costTotal').textContent = '0 đ';
+    document.getElementById('sellTotal').textContent = '0 đ';
+    document.getElementById('smartLow').textContent = '0 đ';
+    document.getElementById('smartMid').textContent = '0 đ';
+    document.getElementById('smartHigh').textContent = '0 đ';
+    document.getElementById('detailBox').innerHTML = 'Hãy nhập rộng, cao và số lượng để tính.';
+    return;
+  }
+
+  // Practical approximation tuned for quick quoting on mobile
+  const stepW = w + 3;
+  const stepH = h + 3;
+  const sheetW = 308, sheetH = 450;
+  const up = Math.max(1, Math.floor(sheetW / stepW) * Math.floor(sheetH / stepH));
+  const areaPerLabel = (stepW * stepH) / 1000000; // m²
+  const materialRate = Number(b.price||0) + Number(f.price||0);
+  const materialCostPer = areaPerLabel * materialRate;
+  const clickPerSheet = 1440;
+  const dieCostPerLabel = 85;
+  const maintenancePerLabel = 12;
+  const laborFixed = 100000;
+  const packingFixed = 50000;
+  const wasteRate = 1.06;
+  const qtyWithWaste = qty * wasteRate;
+  const sheets = Math.ceil(qtyWithWaste / up);
+  const printCostPerLabel = (sheets * clickPerSheet) / qty;
+  const fixedPerLabel = (laborFixed + packingFixed) / qty;
+  const costPer = materialCostPer + printCostPerLabel + dieCostPerLabel + maintenancePerLabel + fixedPerLabel;
+  const sellPer = Math.max(ceil50(costPer * 1.9), ceil50(costPer + 250));
+  const smartLow = Math.max(ceil50(sellPer - 50), ceil50(costPer * 1.65));
+  const smartMid = ceil50(sellPer);
+  const smartHigh = ceil50(sellPer + 50);
+  const totalCost = costPer * qty;
+  const totalSell = sellPer * qty;
+
+  document.getElementById('costPer').textContent = fmt(costPer);
+  document.getElementById('sellPer').textContent = fmt(sellPer);
+  document.getElementById('costTotal').textContent = fmt(totalCost);
+  document.getElementById('sellTotal').textContent = fmt(totalSell);
+  document.getElementById('smartLow').textContent = fmt(smartLow);
+  document.getElementById('smartMid').textContent = fmt(smartMid);
+  document.getElementById('smartHigh').textContent = fmt(smartHigh);
+
+  document.getElementById('detailBox').innerHTML = `
+    <div><b>Step tính:</b> ${stepW.toFixed(1)} × ${stepH.toFixed(1)} mm</div>
+    <div><b>Tem / khổ 308×450:</b> ${up.toLocaleString('vi-VN')} tem</div>
+    <div><b>Chi phí vật liệu / tem:</b> ${fmt(materialCostPer)}</div>
+    <div><b>Chi phí in / tem:</b> ${fmt(printCostPerLabel)}</div>
+    <div><b>Chi phí bế / tem:</b> ${fmt(dieCostPerLabel)}</div>
+    <div><b>Bảo trì / tem:</b> ${fmt(maintenancePerLabel)}</div>
+    <div><b>Chi phí cố định / tem:</b> ${fmt(fixedPerLabel)}</div>
+    <div><b>Số khổ in ước tính:</b> ${sheets.toLocaleString('vi-VN')} khổ</div>
+  `;
+}
+function resetForm(){
+  document.getElementById('w').value='';
+  document.getElementById('h').value='';
+  document.getElementById('qty').value='5000';
+  document.getElementById('baseMaterial').value='0';
+  document.getElementById('finishMaterial').value='0';
+  calculate();
+}
+function maybeRegisterSW(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+  }
+}
+function setInstallHint(){
+  const el = document.getElementById('installHint');
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    el.textContent = 'Đang chạy ở chế độ app';
+  } else if (isiOS) {
+    el.textContent = 'Safari → Chia sẻ → Thêm vào Màn hình chính';
+  } else {
+    el.textContent = 'Chrome → menu ⋮ → Add to Home screen';
+  }
+}
+
+document.getElementById('catalogType').addEventListener('change', ()=>{
+  selectedIndex = -1;
+  document.getElementById('matCode').value='';
+  document.getElementById('matName').value='';
+  document.getElementById('matPrice').value='';
+  refreshTable();
+});
+document.getElementById('saveMatBtn').addEventListener('click', saveMaterial);
+document.getElementById('deleteMatBtn').addEventListener('click', deleteMaterial);
+document.getElementById('exportJsonBtn').addEventListener('click', exportJSON);
+document.getElementById('importJsonBtn').addEventListener('click', importJSON);
+document.getElementById('calcBtn').addEventListener('click', calculate);
+document.getElementById('resetBtn').addEventListener('click', resetForm);
+['w','h','qty','baseMaterial','finishMaterial'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', calculate);
+  document.getElementById(id).addEventListener('change', calculate);
+});
+
+refreshSelects();
+refreshTable();
+calculate();
+setInstallHint();
+maybeRegisterSW();
+</script>
+</body>
+</html>
