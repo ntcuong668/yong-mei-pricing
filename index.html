@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F47A20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="YM Pricing">
+<title>Yong Mei Pricing</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{
+  --orange:#F47A20; --blue:#0E4A86; --bg:#fff7ef; --card:#fff; --line:#d7e3ef; --muted:#6a7c90; --radius:20px;
+  --shadow:0 10px 26px rgba(14,74,134,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#f9fcff,#fff7ef);color:#19324d}
+.app{max-width:680px;margin:0 auto;min-height:100vh;padding:12px 14px 28px}
+.hero{
+  background:linear-gradient(135deg, rgba(244,122,32,1), rgba(244,122,32,.92) 45%, rgba(14,74,134,.98));
+  color:#fff;border-radius:28px;padding:18px 16px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:5;margin-bottom:14px
+}
+.brand{display:flex;gap:12px;align-items:center}
+.brand img,.brand .fallback{width:56px;height:56px;border-radius:16px;background:#fff;object-fit:contain;padding:6px;flex:0 0 auto}
+.fallback{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--orange)}
+.brand h1{margin:0;font-size:1.2rem;line-height:1.2}
+.brand p{margin:4px 0 0;font-size:.9rem;opacity:.92}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);padding:8px 10px;border-radius:999px;font-size:.82rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.section-title{margin:0 0 8px;color:var(--blue);font-size:1.06rem;font-weight:800}
+.sub{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+.grid{display:grid;gap:12px}
+.grid.two{grid-template-columns:1fr 1fr}
+@media (max-width:520px){.grid.two,.btnrow,.results,.smart,.meta-grid,.config-grid{grid-template-columns:1fr}}
+label{display:block;margin:0 0 6px;font-weight:700;color:#42566d;font-size:.92rem}
+input,select,button{font:inherit}
+input,select{
+  width:100%;padding:13px 14px;border-radius:16px;border:1px solid #cfdae6;background:#fff;outline:none
+}
+input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(244,122,32,.12)}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.btn{border:none;border-radius:16px;padding:13px 15px;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--orange);color:#fff}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid #d7e3ef}
+.btn.secondary{background:#4fb2e6;color:#fff}
+.btn.soft{background:#fff4e8;color:var(--orange);border:1px solid rgba(244,122,32,.22)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{padding:9px 12px;background:#f4f8fc;border:1px solid #dfebf5;border-radius:999px;font-size:.78rem;color:#355}
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.meta-box{border:1px dashed #dbe5ef;border-radius:16px;padding:12px;background:#fff}
+.meta-box .k{font-size:.78rem;color:#55697f}
+.meta-box .v{font-size:1rem;font-weight:900;color:#245aa7;margin-top:4px}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:#fff;border:1px solid #dfe7f0;border-radius:16px;padding:14px}
+.metric .k{font-size:.84rem;color:var(--muted);font-weight:700}
+.metric .v{font-size:1.35rem;font-weight:900;margin-top:6px}
+.smart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.smart .box{border:1px solid #dfe7f0;border-radius:16px;padding:14px;background:#fff;text-align:center}
+.smart .name{font-size:.84rem;color:var(--muted);font-weight:800}
+.smart .price{font-size:1.25rem;font-weight:900;color:#245aa7;margin-top:6px}
+.smart .sum{font-size:.78rem;color:var(--muted);margin-top:6px}
+details.config-box{
+  background:#fff8f2;border:1px dashed rgba(244,122,32,.28);border-radius:16px;padding:12px;margin-top:12px
+}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.toggle-row{display:flex;gap:10px;margin:12px 0}
+.toggle{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #d7e3ef;border-radius:999px;padding:12px;background:#fff}
+.toggle input{width:auto}
+.table-wrap{margin-top:12px;border:1px solid #dfe7f0;border-radius:16px;overflow:auto;background:#fff}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #edf2f7;text-align:left;vertical-align:middle}
+th{background:#f7fafc;position:sticky;top:0}
+#materialsTable tr.selected{background:#fff7ef}
+.hint{font-size:.8rem;color:var(--muted);margin-top:8px;line-height:1.45}
+.success{color:#116329;font-weight:700}
+.error{color:#b42318;font-weight:700}
+.small-note{font-size:.76rem;color:var(--muted);line-height:1.45}
+.footer-note{font-size:.78rem;color:var(--muted);text-align:center;padding:6px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="brand">
+      <img src="logo_yong_mei.png" alt="Yong Mei logo" onerror="this.style.display='none';document.getElementById('fallbackLogo').style.display='flex'">
+      <div id="fallbackLogo" class="fallback" style="display:none">YM</div>
+      <div>
+        <h1>Yong Mei Pricing</h1>
+        <p>Bản web app đã đồng bộ lại đúng với file HTML</p>
+      </div>
+    </div>
+    <div class="pill-row">
+      <div class="pill">Đồng bộ đúng HTML</div>
+      <div class="pill">Tự lưu cấu hình</div>
+      <div class="pill">Dùng tốt trên điện thoại</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Thông tin đầu vào</h2>
+    <div class="sub">Chọn vật liệu nền và cán màng / UV riêng để ra giá chính xác hơn.</div>
+
+    <div class="grid two">
+      <div><label>Rộng thành phẩm (mm)</label><input id="w" type="number" value="50"></div>
+      <div><label>Cao thành phẩm (mm)</label><input id="h" type="number" value="100"></div>
+      <div><label>Số lượng</label><input id="qty" type="number" value="2000"></div>
+      <div><label>Hao hụt (%)</label><input id="waste" type="number" value="5"></div>
+      <div><label>Vật liệu nền</label><select id="baseMaterial"></select></div>
+      <div><label>Cán màng / UV</label><select id="finishMaterial"></select></div>
+      <div><label>Chi phí đóng gói (đ)</label><input id="packagingInput" type="number" value="100000"></div>
+      <div><label>Chi phí vận chuyển (đ)</label><input id="shippingInput" type="number" value="400000"></div>
+    </div>
+
+    <div class="btnrow">
+      <button class="btn primary" id="calcBtn">Tính giá</button>
+      <button class="btn ghost" id="resetBtn">Khôi phục mặc định</button>
+    </div>
+
+    <div class="chips">
+      <div class="chip" id="chipUsable">Khổ hữu dụng: 308 × 450 mm</div>
+      <div class="chip" id="chipClick">Giá click: 1.440 đ/khổ</div>
+      <div class="chip" id="chipProfit">Lợi nhuận mục tiêu nội bộ: 90%</div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-box"><div class="k">Tổng giá vật liệu đang chọn</div><div class="v" id="selectedMaterialRate">0 đ/m²</div></div>
+      <div class="meta-box"><div class="k">Mã vật liệu nền</div><div class="v" id="selectedBaseCode">-</div></div>
+      <div class="meta-box"><div class="k">Mã cán / UV</div><div class="v" id="selectedFinishCode">-</div></div>
+    </div>
+
+    <details class="config-box">
+      <summary><b>Chỉnh 3 tham số tính giá</b></summary>
+      <div class="config-grid">
+        <div><label>Khổ hữu dụng ngang (mm)</label><input id="cfgUsableWidth" type="number"></div>
+        <div><label>Khổ hữu dụng dọc (mm)</label><input id="cfgUsableHeight" type="number"></div>
+        <div><label>Giá click (đ/khổ)</label><input id="cfgClickPrice" type="number"></div>
+        <div><label>Lợi nhuận mục tiêu nội bộ (%)</label><input id="cfgProfitTarget" type="number"></div>
+      </div>
+      <div class="btnrow">
+        <button class="btn primary" id="saveConfigBtn">Lưu cấu hình</button>
+        <button class="btn ghost" id="resetConfigBtn">Khôi phục mặc định</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Kết quả nhanh</h2>
+    <div class="results">
+      <div class="metric"><div class="k">Giá vốn / tem</div><div class="v" id="costPer">0 đ</div></div>
+      <div class="metric"><div class="k">Giá bán đề xuất / tem</div><div class="v" id="sellPer">0 đ</div></div>
+      <div class="metric"><div class="k">Tổng giá thành</div><div class="v" id="costTotal">0 đ</div></div>
+      <div class="metric"><div class="k">Doanh thu đề xuất</div><div class="v" id="sellTotal">0 đ</div></div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:18px">Giá thông minh</h2>
+    <div class="smart">
+      <div class="box"><div class="name">Cạnh tranh</div><div class="price" id="smartLow">0 đ</div><div class="sum" id="smartLowSum">Tổng bán: 0 đ</div></div>
+      <div class="box"><div class="name">Chuẩn</div><div class="price" id="smartMid">0 đ</div><div class="sum" id="smartMidSum">Tổng bán: 0 đ</div></div>
+      <div class="box"><div class="name">Premium</div><div class="price" id="smartHigh">0 đ</div><div class="sum" id="smartHighSum">Tổng bán: 0 đ</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary><b>Xem chi tiết tính toán</b></summary>
+      <div class="table-wrap"><table><tbody id="detailBox"></tbody></table></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Quản lý vật liệu</h2>
+    <div class="toggle-row">
+      <label class="toggle"><input type="radio" name="catalogTypeRadio" value="base" checked> Vật liệu nền</label>
+      <label class="toggle"><input type="radio" name="catalogTypeRadio" value="finish"> Cán màng / UV</label>
+    </div>
+    <select id="catalogType" class="hide"><option value="base">Vật liệu nền</option><option value="finish">Cán màng / UV</option></select>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:22%">Mã vật liệu</th><th>Tên vật liệu</th><th style="width:22%">Đơn giá (đ/m²)</th></tr></thead>
+        <tbody id="materialsTable"></tbody>
+      </table>
+    </div>
+
+    <div class="grid two" style="margin-top:12px">
+      <div><label>Mã vật liệu</label><input id="matCode" placeholder="Ví dụ: BASE001 hoặc FIN001"></div>
+      <div><label>Đơn giá (đ/m²)</label><input id="matPrice" type="number" placeholder="Ví dụ: 12000"></div>
+      <div style="grid-column:1/-1"><label>Tên vật liệu / tên cán màng / UV</label><input id="matName" placeholder="Ví dụ: Decal giấy / Cán mờ"></div>
+    </div>
+
+    <div class="btnrow">
+      <button class="btn secondary" id="loadSelectedBtn">Nạp dòng đang chọn</button>
+      <button class="btn primary" id="saveMatBtn">Thêm / cập nhật</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn soft" id="deleteMatBtn">Xóa vật liệu</button>
+      <button class="btn ghost" id="resetMaterialsBtn">Khôi phục mặc định</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn secondary" id="exportExcelBtn">Xuất Excel vật liệu</button>
+      <button class="btn ghost" id="importExcelBtn">Nhập Excel vật liệu</button>
+    </div>
+    <input id="excelFileInput" type="file" accept=".xls,.xml" class="hide">
+    <div id="msg" class="hint">Dữ liệu được lưu trên thiết bị hiện tại. Bạn có thể Xuất Excel vật liệu rồi sửa file đó và Nhập Excel vật liệu lại vào app.</div>
+    <div class="small-note">Excel nhập tốt nhất là file do chính app xuất ra.</div>
+  </div>
+
+  <div class="footer-note">© Yong Mei Printing Solutions — Mobile web app đã đồng bộ với file HTML.</div>
+</div>
+
+<script>
+const CFG_STORAGE_KEY = 'yong_mei_cfg_v5_match_html';
+const DATA_STORAGE_KEY = 'yong_mei_materials_v5_match_html';
+
+const defaultCfg = {
+  usableWidth: 308,
+  usableHeight: 450,
+  clickPrice: 1440,
+  maintenanceMonthly: 35000000,
+  maintenanceOutputM2: 100000,
+  salaryMonthly: 15000000,
+  workDays: 26,
+  diecutPerDay: 40000,
+  packaging: 100000,
+  shipping: 400000,
+  profitTarget: 0.9,
+  anchorQty: 3000,
+  baseFixed: 650,
+  areaCoef: 5.2,
+  effPenalty: 630,
+  standardMaterial: 15000,
+  expBase: 0.4,
+  expSlopePerCm2: 0.0006,
+  expMin: 0.26,
+  expMax: 0.4,
+  minChargeAreaRef: 9,
+  minChargeAtRef: 700000,
+  minChargePerCm2: 5700,
+  minChargeStep: 50000,
+  minMargins: {1000:1.65,2000:1.55,3000:1.45,5000:1.35,10000:1.28,20000:1.22},
+  strategy: {competitive:0.96, standard:1.0, premium:1.08}
+};
+const defaultData = {
+  base: [
+    {code:'CLW3HV', name:'AL GIẤY KEO NÓNG 80g...', price:6700},
+    {code:'CLW3P', name:'DECAL GIẤY KEO NƯỚC, 80g...', price:7100},
+    {code:'PET01', name:'DECAL PET TRONG 50#', price:9800}
+  ],
+  finish: [
+    {code:'FIN000', name:'Không cán / không UV', price:0},
+    {code:'PP3BDV', name:'MÀNG TRONG THƯỜNG 23um...', price:3800},
+    {code:'CM01', name:'Cán màng mờ', price:3500},
+    {code:'CB01', name:'Cán màng bóng', price:3000},
+    {code:'UVB1', name:'UV bóng', price:4000}
+  ]
+};
+
+let cfg = loadCfg();
+let data = loadData();
+let selectedIndex = -1;
+
+function loadCfg(){
+  try{
+    const raw = localStorage.getItem(CFG_STORAGE_KEY);
+    if(raw) return {...structuredClone(defaultCfg), ...JSON.parse(raw)};
+  }catch(e){}
+  return structuredClone(defaultCfg);
+}
+function saveCfg(){ localStorage.setItem(CFG_STORAGE_KEY, JSON.stringify(cfg)); }
+function loadData(){
+  try{
+    const raw = localStorage.getItem(DATA_STORAGE_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      return {
+        base: Array.isArray(p.base) ? p.base : structuredClone(defaultData.base),
+        finish: Array.isArray(p.finish) ? p.finish : structuredClone(defaultData.finish)
+      };
+    }
+  }catch(e){}
+  return structuredClone(defaultData);
+}
+function saveData(){ localStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data)); }
+
+function fmt(n){ return (Math.round(Number(n)||0)).toLocaleString('vi-VN') + ' đ'; }
+function fmtNum(n,d=2){ return new Intl.NumberFormat('vi-VN',{minimumFractionDigits:0,maximumFractionDigits:d}).format(n); }
+function round50(x){ return Math.round((Number(x)||0) / 50) * 50; }
+function ceilBase(x, base=50000){ return Math.ceil((Number(x)||0) / base) * base; }
+function escapeHtml(t){ return String(t).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function setMsg(text, type=''){ const el=document.getElementById('msg'); el.className='hint ' + (type||''); el.textContent=text; }
+function currentList(){ return document.getElementById('catalogType').value === 'base' ? data.base : data.finish; }
+function getMarginFactor(qty){
+  const entries = Object.entries(cfg.minMargins).map(([k,v])=>[Number(k), Number(v)]).sort((a,b)=>a[0]-b[0]);
+  if(qty <= entries[0][0]) return entries[0][1];
+  let chosen = entries[0][1];
+  for(const [q,f] of entries){ if(qty >= q) chosen = f; else break; }
+  return chosen;
+}
+function refreshConfigUI(){
+  document.getElementById('cfgUsableWidth').value = cfg.usableWidth;
+  document.getElementById('cfgUsableHeight').value = cfg.usableHeight;
+  document.getElementById('cfgClickPrice').value = cfg.clickPrice;
+  document.getElementById('cfgProfitTarget').value = Math.round(cfg.profitTarget * 100);
+  document.getElementById('packagingInput').value = cfg.packaging;
+  document.getElementById('shippingInput').value = cfg.shipping;
+  document.getElementById('chipUsable').textContent = `Khổ hữu dụng: ${cfg.usableWidth} × ${cfg.usableHeight} mm`;
+  document.getElementById('chipClick').textContent = `Giá click: ${fmtNum(cfg.clickPrice,0)} đ/khổ`;
+  document.getElementById('chipProfit').textContent = `Lợi nhuận mục tiêu nội bộ: ${Math.round(cfg.profitTarget*100)}%`;
+}
+function saveConfigFromForm(){
+  const uw = Number(document.getElementById('cfgUsableWidth').value || 0);
+  const uh = Number(document.getElementById('cfgUsableHeight').value || 0);
+  const cp = Number(document.getElementById('cfgClickPrice').value || 0);
+  const pt = Number(document.getElementById('cfgProfitTarget').value || 0);
+  if(!(uw>0) || !(uh>0) || !(cp>=0) || !(pt>=0)){ alert('Vui lòng nhập dữ liệu cấu hình hợp lệ.'); return; }
+  cfg.usableWidth = uw;
+  cfg.usableHeight = uh;
+  cfg.clickPrice = cp;
+  cfg.profitTarget = pt / 100;
+  cfg.packaging = Number(document.getElementById('packagingInput').value || cfg.packaging);
+  cfg.shipping = Number(document.getElementById('shippingInput').value || cfg.shipping);
+  saveCfg(); refreshConfigUI(); calculate(); alert('Đã lưu cấu hình tính giá.');
+}
+function resetConfigDefault(){
+  cfg = structuredClone(defaultCfg);
+  saveCfg(); refreshConfigUI(); calculate(); alert('Đã khôi phục cấu hình mặc định.');
+}
+function refreshSelects(){
+  const baseSel = document.getElementById('baseMaterial');
+  const finSel = document.getElementById('finishMaterial');
+  const oldBase = baseSel.value, oldFin = finSel.value;
+  baseSel.innerHTML = data.base.map((x,i)=>`<option value="${i}">${x.code} | ${x.name}</option>`).join('');
+  finSel.innerHTML = data.finish.map((x,i)=>`<option value="${i}">${x.code} | ${x.name}</option>`).join('');
+  if(oldBase && data.base[oldBase]) baseSel.value = oldBase;
+  if(oldFin && data.finish[oldFin]) finSel.value = oldFin;
+}
+function refreshTable(){
+  const tbody = document.getElementById('materialsTable');
+  const list = currentList();
+  tbody.innerHTML = list.map((m,i)=>`
+    <tr data-index="${i}" class="${i===selectedIndex ? 'selected':''}">
+      <td>${escapeHtml(m.code||'')}</td>
+      <td>${escapeHtml(m.name||'')}</td>
+      <td>${Number(m.price||0).toLocaleString('vi-VN')}</td>
+    </tr>`).join('');
+  [...tbody.querySelectorAll('tr')].forEach(tr => tr.addEventListener('click', () => {
+    selectedIndex = Number(tr.dataset.index);
+    refreshTable();
+    setMsg('Đã chọn dòng vật liệu. Bấm "Nạp dòng đang chọn" để đưa lên ô nhập.', 'success');
+  }));
+}
+function loadSelectedRow(){
+  const list = currentList();
+  if(selectedIndex < 0 || !list[selectedIndex]){ setMsg('Hãy chọn một dòng trong bảng trước.', 'error'); return; }
+  const item = list[selectedIndex];
+  document.getElementById('matCode').value = item.code || '';
+  document.getElementById('matName').value = item.name || '';
+  document.getElementById('matPrice').value = item.price || 0;
+  setMsg('Đã nạp dòng đang chọn.', 'success');
+}
+function clearEditor(){
+  selectedIndex = -1;
+  document.getElementById('matCode').value = '';
+  document.getElementById('matName').value = '';
+  document.getElementById('matPrice').value = '';
+  refreshTable();
+}
+function saveMaterial(){
+  const list = currentList();
+  const code = document.getElementById('matCode').value.trim();
+  const name = document.getElementById('matName').value.trim();
+  const price = Number(document.getElementById('matPrice').value);
+  if(!code || !name || !(price >= 0)){ setMsg('Cần nhập đủ mã, tên và đơn giá hợp lệ.', 'error'); return; }
+  const dup = list.findIndex((x,idx)=> String(x.code).toLowerCase() === code.toLowerCase() && idx !== selectedIndex);
+  if(dup >= 0){ setMsg('Mã vật liệu đã tồn tại trong danh mục này.', 'error'); return; }
+  const item = {code, name, price};
+  if(selectedIndex >= 0 && list[selectedIndex]){ list[selectedIndex] = item; setMsg('Đã cập nhật và tự lưu vật liệu.', 'success'); }
+  else { list.push(item); selectedIndex = list.length - 1; setMsg('Đã thêm và tự lưu vật liệu mới.', 'success'); }
+  saveData(); refreshSelects(); refreshTable(); calculate();
+}
+function resetMaterialsDefault(){
+  data = structuredClone(defaultData);
+  saveData(); clearEditor(); refreshSelects(); refreshTable(); calculate();
+  setMsg('Đã khôi phục danh mục vật liệu mặc định.', 'success');
+}
+function deleteMaterial(){
+  const list = currentList();
+  if(selectedIndex < 0 || !list[selectedIndex]){ setMsg('Hãy chọn một dòng để xóa.', 'error'); return; }
+  const removed = list.splice(selectedIndex, 1);
+  saveData(); clearEditor(); refreshSelects(); calculate();
+  setMsg('Đã xóa vật liệu: ' + removed[0].code, 'success');
+}
+function exportExcelMaterials(){
+  const xmlEscape = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const sheetXml = (name, rows) => `
+    <Worksheet ss:Name="${xmlEscape(name)}">
+      <Table>
+        <Row>
+          <Cell><Data ss:Type="String">Mã vật liệu</Data></Cell>
+          <Cell><Data ss:Type="String">Tên vật liệu</Data></Cell>
+          <Cell><Data ss:Type="String">Đơn giá (đ/m²)</Data></Cell>
+        </Row>
+        ${rows.map(r => `
+          <Row>
+            <Cell><Data ss:Type="String">${xmlEscape(r.code || '')}</Data></Cell>
+            <Cell><Data ss:Type="String">${xmlEscape(r.name || '')}</Data></Cell>
+            <Cell><Data ss:Type="Number">${Number(r.price || 0)}</Data></Cell>
+          </Row>`).join('')}
+      </Table>
+    </Worksheet>`;
+  const workbook = `<?xml version="1.0" encoding="utf-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ ${sheetXml('Vat_lieu_nen', data.base)}
+ ${sheetXml('Can_mang_UV', data.finish)}
+</Workbook>`;
+  const blob = new Blob([workbook], {type:'application/vnd.ms-excel;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'yong_mei_danh_muc_vat_lieu.xls';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  setMsg('Đã xuất Excel vật liệu.', 'success');
+}
+function parseWorkbookByRegex(text){
+  const sheets = {};
+  const wsRegex = /<Worksheet\b[^>]*?(?:ss:Name|Name)=["']([^"']+)["'][^>]*>([\s\S]*?)<\/Worksheet>/gi;
+  let m;
+  while((m = wsRegex.exec(text)) !== null){
+    const sheetName = m[1].trim();
+    const sheetBody = m[2];
+    const rows = [];
+    const rowRegex = /<Row\b[^>]*>([\s\S]*?)<\/Row>/gi;
+    let rm;
+    while((rm = rowRegex.exec(sheetBody)) !== null){
+      const rowBody = rm[1];
+      const values = [];
+      const dataRegex = /<Data\b[^>]*>([\s\S]*?)<\/Data>/gi;
+      let dm;
+      while((dm = dataRegex.exec(rowBody)) !== null){
+        values.push(decodeXml(dm[1].trim()));
+      }
+      if(values.length) rows.push(values);
+    }
+    sheets[sheetName] = rows;
+  }
+  return sheets;
+}
+function decodeXml(text){
+  const txt = document.createElement('textarea');
+  txt.innerHTML = text.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+  return txt.value;
+}
+function normalizeSheetRows(rows){
+  return (rows || []).slice(1).map(r => ({
+    code: String(r[0] || '').trim(),
+    name: String(r[1] || '').trim(),
+    price: Number(String(r[2] || '0').replace(/[,\s]/g,'')) || 0
+  })).filter(x => x.code && x.name);
+}
+function importExcelMaterialsFromText(text){
+  const sheets = parseWorkbookByRegex(text);
+  const baseRows = normalizeSheetRows(sheets['Vat_lieu_nen']);
+  const finishRows = normalizeSheetRows(sheets['Can_mang_UV']);
+  if(!baseRows.length && !finishRows.length){
+    setMsg('Không đọc được file Excel. Hãy dùng đúng file Excel do app xuất ra.', 'error');
+    return;
+  }
+  if(baseRows.length) data.base = baseRows;
+  if(finishRows.length) data.finish = finishRows;
+  saveData(); clearEditor(); refreshSelects(); refreshTable(); calculate();
+  setMsg('Đã nhập Excel vật liệu thành công.', 'success');
+}
+function handleExcelImport(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => importExcelMaterialsFromText(String(e.target.result || ''));
+  reader.onerror = () => setMsg('Không đọc được file Excel đã chọn.', 'error');
+  reader.readAsText(file, 'utf-8');
+}
+function updateSelectedMeta(){
+  const base = data.base[Number(document.getElementById('baseMaterial').value || 0)] || data.base[0];
+  const finish = data.finish[Number(document.getElementById('finishMaterial').value || 0)] || data.finish[0];
+  const totalMaterialRate = Number(base.price || 0) + Number(finish.price || 0);
+  document.getElementById('selectedMaterialRate').textContent = `${fmtNum(totalMaterialRate,0)} đ/m²`;
+  document.getElementById('selectedBaseCode').textContent = base.code || '-';
+  document.getElementById('selectedFinishCode').textContent = finish.code || '-';
+}
+function calculate(){
+  cfg.packaging = Number(document.getElementById('packagingInput').value || cfg.packaging);
+  cfg.shipping = Number(document.getElementById('shippingInput').value || cfg.shipping);
+
+  const w = Number(document.getElementById('w').value || 0);
+  const h = Number(document.getElementById('h').value || 0);
+  const qty = Number(document.getElementById('qty').value || 0);
+  const waste = Number(document.getElementById('waste').value || 0) / 100;
+  const base = data.base[Number(document.getElementById('baseMaterial').value || 0)] || data.base[0];
+  const finish = data.finish[Number(document.getElementById('finishMaterial').value || 0)] || data.finish[0];
+  updateSelectedMeta();
+
+  if(!(w>0) || !(h>0) || !(qty>0)){
+    ['costPer','sellPer','costTotal','sellTotal','smartLow','smartMid','smartHigh'].forEach(id=>document.getElementById(id).textContent='0 đ');
+    document.getElementById('detailBox').innerHTML = '<tr><td colspan="2">Hãy nhập rộng, cao và số lượng để tính.</td></tr>';
+    return;
+  }
+
+  const stepW = w + 3;
+  const stepH = h + 3;
+  const labelsAcross = Math.max(1, Math.floor(cfg.usableWidth / stepW));
+  const labelsDown = Math.max(1, Math.floor(cfg.usableHeight / stepH));
+  const labelsPerSheet = Math.max(1, labelsAcross * labelsDown);
+  const labelAreaM2 = (w * h) / 1000000;
+  const totalMaterialRate = Number(base.price||0) + Number(finish.price||0);
+  const maintenancePerM2 = cfg.maintenanceMonthly / cfg.maintenanceOutputM2;
+  const diecutPerLabel = (cfg.salaryMonthly / cfg.workDays) / cfg.diecutPerDay;
+
+  const sheetsStd = Math.ceil(qty / labelsPerSheet);
+  const sheetsActual = Math.ceil(sheetsStd * (1 + waste));
+  const clickCost = sheetsActual * cfg.clickPrice;
+  const finishedAreaM2 = qty * labelAreaM2;
+  const billableAreaM2 = finishedAreaM2 * (1 + waste);
+  const materialCost = billableAreaM2 * totalMaterialRate;
+  const diecutCost = qty * diecutPerLabel;
+  const maintenanceCost = billableAreaM2 * maintenancePerM2;
+  const totalCost = clickCost + materialCost + diecutCost + maintenanceCost + cfg.packaging + cfg.shipping;
+  const costPerLabel = totalCost / qty;
+  const suggestedPricePerLabel = costPerLabel * (1 + cfg.profitTarget);
+  const suggestedRevenue = suggestedPricePerLabel * qty;
+
+  const areaCm2 = (w * h) / 100;
+  const fixedBasePrice = round50(cfg.baseFixed + cfg.areaCoef * areaCm2 + cfg.effPenalty / labelsPerSheet);
+  const exponentDynamic = Math.max(cfg.expMin, Math.min(cfg.expMax, cfg.expBase - areaCm2 * cfg.expSlopePerCm2));
+  const materialFactor = totalMaterialRate / cfg.standardMaterial;
+  const minimumCharge = ceilBase(Math.max(cfg.minChargeAtRef, cfg.minChargeAtRef + Math.max(0, areaCm2 - cfg.minChargeAreaRef) * cfg.minChargePerCm2), cfg.minChargeStep);
+  const quantityFactor = Number(Math.pow(qty / cfg.anchorQty, -exponentDynamic).toFixed(4));
+  const marketModelPerLabel = round50(fixedBasePrice * quantityFactor * materialFactor);
+  const minMarginPerLabel = round50(costPerLabel * getMarginFactor(qty));
+  const minimumChargePerLabel = round50(minimumCharge / qty);
+  const smartBase = Math.max(marketModelPerLabel, minMarginPerLabel, minimumChargePerLabel);
+  const smartCompetitive = round50(smartBase * cfg.strategy.competitive);
+  const smartStandard = round50(smartBase * cfg.strategy.standard);
+  const smartPremium = round50(smartBase * cfg.strategy.premium);
+
+  document.getElementById('costPer').textContent = fmt(costPerLabel);
+  document.getElementById('sellPer').textContent = fmt(suggestedPricePerLabel);
+  document.getElementById('costTotal').textContent = fmt(totalCost);
+  document.getElementById('sellTotal').textContent = fmt(suggestedRevenue);
+  document.getElementById('smartLow').textContent = fmt(smartCompetitive);
+  document.getElementById('smartMid').textContent = fmt(smartStandard);
+  document.getElementById('smartHigh').textContent = fmt(smartPremium);
+  document.getElementById('smartLowSum').textContent = `Tổng bán: ${fmt(smartCompetitive * qty)}`;
+  document.getElementById('smartMidSum').textContent = `Tổng bán: ${fmt(smartStandard * qty)}`;
+  document.getElementById('smartHighSum').textContent = `Tổng bán: ${fmt(smartPremium * qty)}`;
+
+  const rows = [
+    ['Khóa size', `${fmtNum(w,0)} x ${fmtNum(h,0)} mm`],
+    ['Vật liệu nền', `${base.code} | ${base.name}`],
+    ['Cán màng / UV', `${finish.code} | ${finish.name}`],
+    ['Tổng giá vật liệu', `${fmtNum(totalMaterialRate,0)} đ/m²`],
+    ['Khổ hữu dụng', `${cfg.usableWidth} × ${cfg.usableHeight} mm`],
+    ['Step ngang / dọc', `${fmtNum(stepW)} / ${fmtNum(stepH)} mm`],
+    ['Tem theo ngang / dọc', `${labelsAcross} / ${labelsDown}`],
+    ['Tem / khổ', `${labelsPerSheet}`],
+    ['Số khổ chuẩn / thực tế', `${sheetsStd} / ${sheetsActual}`],
+    ['Tiền click', fmt(clickCost)],
+    ['Chi phí vật liệu', fmt(materialCost)],
+    ['Chi phí bế', fmt(diecutCost)],
+    ['Chi phí bảo trì', fmt(maintenanceCost)],
+    ['Đóng gói / Vận chuyển', `${fmt(cfg.packaging)} / ${fmt(cfg.shipping)}`],
+    ['Tổng giá thành', fmt(totalCost)],
+    ['Giá vốn / tem', fmt(costPerLabel)],
+    ['Giá thị trường model / tem', fmt(marketModelPerLabel)],
+    ['Giá vốn * biên tối thiểu / tem', fmt(minMarginPerLabel)],
+    ['Minimum charge / tem', fmt(minimumChargePerLabel)]
+  ];
+  document.getElementById('detailBox').innerHTML = rows.map(r=>`<tr><td><b>${escapeHtml(r[0])}</b></td><td>${escapeHtml(r[1])}</td></tr>`).join('');
+}
+function resetForm(){
+  document.getElementById('w').value = 50;
+  document.getElementById('h').value = 100;
+  document.getElementById('qty').value = 2000;
+  document.getElementById('waste').value = 5;
+  document.getElementById('baseMaterial').value = 0;
+  document.getElementById('finishMaterial').value = 1;
+  document.getElementById('packagingInput').value = cfg.packaging;
+  document.getElementById('shippingInput').value = cfg.shipping;
+  calculate();
+}
+function bindUI(){
+  document.querySelectorAll('input[name="catalogTypeRadio"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('catalogType').value = r.value;
+      clearEditor(); refreshTable();
+    });
+  });
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+  document.getElementById('resetBtn').addEventListener('click', resetForm);
+  document.getElementById('saveConfigBtn').addEventListener('click', saveConfigFromForm);
+  document.getElementById('resetConfigBtn').addEventListener('click', resetConfigDefault);
+  document.getElementById('loadSelectedBtn').addEventListener('click', loadSelectedRow);
+  document.getElementById('saveMatBtn').addEventListener('click', saveMaterial);
+  document.getElementById('resetMaterialsBtn').addEventListener('click', resetMaterialsDefault);
+  document.getElementById('deleteMatBtn').addEventListener('click', deleteMaterial);
+  document.getElementById('exportExcelBtn').addEventListener('click', exportExcelMaterials);
+  document.getElementById('importExcelBtn').addEventListener('click', () => document.getElementById('excelFileInput').click());
+  document.getElementById('excelFileInput').addEventListener('change', e => handleExcelImport(e.target.files[0]));
+  ['w','h','qty','waste','baseMaterial','finishMaterial','packagingInput','shippingInput'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calculate);
+    document.getElementById(id).addEventListener('change', calculate);
+  });
+}
+function setInstallHint(){ /* not needed visual here */ }
+function maybeRegisterSW(){ if('serviceWorker' in navigator){ navigator.serviceWorker.register('./service-worker.js?v=5').catch(()=>{}); } }
+function init(){
+  refreshConfigUI();
+  refreshSelects();
+  refreshTable();
+  bindUI();
+  resetForm();
+  maybeRegisterSW();
+}
+init();
+</script>
+</body>
+</html>
