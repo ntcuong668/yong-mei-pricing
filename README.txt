@@ -1,20 +1,13 @@
-YONG MEI PRICING - PWA MOBILE
+Bản cập nhật v4:
+- Có thể chỉnh 3 tham số:
+  1. Khổ hữu dụng
+  2. Giá click
+  3. Lợi nhuận mục tiêu nội bộ
+- Áp dụng cho cả bản web app mobile và bản HTML desktop.
+- Cấu hình sẽ tự lưu trên thiết bị / trình duyệt đang dùng.
 
-Cách dùng nhanh trên điện thoại:
-1. Upload cả thư mục này lên Google Drive / iCloud Drive / Dropbox, hoặc chép vào điện thoại.
-2. Mở file index.html bằng Safari hoặc Chrome.
-3. Chọn:
-   - iPhone/iPad: Chia sẻ -> Thêm vào Màn hình chính
-   - Android Chrome: menu ⋮ -> Add to Home screen
-4. Từ lần sau bấm icon ngoài màn hình là mở như app.
-
-Lưu ý:
-- Để chế độ "mở phát chạy luôn" ổn định hơn, nên host lên một link web tĩnh.
-- Bản này vẫn chạy offline sau khi đã mở lần đầu trên cùng trình duyệt.
-
-File chính:
-- index.html
-- manifest.webmanifest
-- service-worker.js
-- logo_yong_mei.png
-- icon.svg
+Nếu GitHub Pages đang chạy bản cũ:
+1. Upload đè toàn bộ file trong thư mục web app mới lên repo.
+2. Chờ 1-3 phút.
+3. Reload lại link vài lần.
+4. Nếu vẫn chưa đổi, xóa icon app cũ rồi thêm lại.

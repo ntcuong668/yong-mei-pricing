@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
 <rect width="512" height="512" rx="96" fill="#F47A20"/>
-<rect x="38" y="38" width="436" height="436" rx="72" fill="white"/>
-<path d="M130 132h66l60 92 60-92h66l-94 143 102 105h-73l-61-64-61 64h-73l102-105-94-143z" fill="#0E4A86"/>
-<text x="256" y="432" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#F47A20">Yong Mei</text>
+<rect x="40" y="40" width="432" height="432" rx="72" fill="white"/>
+<path d="M128 146h68l60 92 60-92h68l-98 145 104 104h-76l-58-61-58 61h-76l104-104-98-145z" fill="#0E4A86"/>
 </svg>
